@@ -53,10 +53,10 @@ map:
     # Prologue: Make space on the stack and back-up registers
     ### YOUR CODE HERE ###
     
-    addi sp, sp, -12 #-16   # decrementing the stack by 3 location to store a0, a1, s0, ra
+    addi sp, sp, -8 #-16   # decrementing the stack by 3 location to store a0, a1, s0, ra
     sw ra, 0(sp)        #return address of function
     sw s0, 4(sp)        #node
-    sw s1, 8(sp)
+    #sw s1, 8(sp)
     #sw a1, 8(sp)
     #sw a0, 12(sp)
     beq a0, x0, done # If we were given a null pointer (address 0), we're done.
@@ -105,8 +105,8 @@ done:
     ### YOUR CODE HERE ###
     lw ra, 0(sp)        #return address of function
     lw s0, 4(sp)        #node
-    lw s1, 8(sp)
-    addi sp, sp 12
+    #lw s1, 8(sp)
+    addi sp, sp 8
     jr ra # Return to caller
 
 # === Definition of the "square" function ===
