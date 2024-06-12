@@ -31,7 +31,12 @@ void free_list(Node *head) {
 void add_to_front(struct Node **head, int data) {
     /* Check if the head is NULL to make sure that we do not dereference a NULL pointer
     because that would result in a segfault */
-    if (head == NULL) return;
+    if (head == NULL|| *head == NULL) {
+        Node *new_node = create_node(data);
+        *head = new_node;
+        return;
+    }
+    //if (head == NULL) return;
     struct Node *new_node = create_node(data);
     if (*head != NULL) {
         /* The list is not empty */
