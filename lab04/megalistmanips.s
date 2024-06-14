@@ -66,20 +66,44 @@ map:
     # are modified by the callees, even when we know the content inside the functions 
     # we call. this is to enforce the abstraction barrier of calling convention.
 mapLoop:
-    add t1, s0, x0      # load the address of the array of current node into t1
+    #add t1, s0, x0 #load the address of the array of current node into t1
+    #to load the address we have to use lw not add
+    lw t1, 0(s0)        #s0 holds the address of current/this node 
     lw t2, 4(s0)        # load the size of the node's array into t2
 
-    add t1, t1, t0      # offset the array address by the count
+
+    #add t1, t1, t0      # offset the array address by the count
+    # This is a mistake because above instr will add base + (0,1,2) but we want (base + 4) because of byte addressable
+    slli t3, t0, 2      # this instr will multiply the value of t0 with 4
+    add t1, t1, t3      # base addr + offser
     lw a0, 0(t1)        # load the value at that address into a0
+    
+    # before moving to some other function we need to save temp (non-preserved registers)
+    addi sp, sp, -16
+    sw t0, 12(sp)
+    sw t1, 8(sp)
+    sw t2, 4(sp)
+    sw t3, 0(sp)
 
     jalr s1             # call the function on that value.
+    
+    # restore the registers
+    lw t0, 12(sp)
+    lw t1, 8(sp)
+    lw t2, 4(sp)
+    lw t3, 0(sp)
+    addi sp, sp, 16
+
 
     sw a0, 0(t1)        # store the returned value back into the array
     addi t0, t0, 1      # increment the count
     bne t0, t2, mapLoop # repeat if we haven't reached the array size yet
 
-    la a0, 8(s0)        # load the address of the next node into a0
-    lw a1, 0(s1)        # put the address of the function back into a1 to prepare for the recursion
+    #la a0, 8(s0)        # load the address of the next node into a0
+    lw a0, 8(s0)
+    #lw a1, 0(s1)        # put the address of the function back into a1 to prepare for the recursion
+    # we have saved the addr of the function in s1 so we dont need to use lw, we have to use add to move s1 data (addr) in 1
+    add a1, x0, s1
 
     jal  map            # recurse
 done:
