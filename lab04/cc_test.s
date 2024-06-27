@@ -129,12 +129,12 @@ inc_arr_loop:
     # Also ask yourself this: why don't we need to preserve t1? I think its because t1 is just storing the addr every time, 
     # and incrmenting to next location
     #
-    addi sp, sp, -4
-    lw t0, 0(sp)
+#     addi sp, sp, -4
+#     lw t0, 0(sp)
     jal helper_fn
     # Finished call for helper_fn
-    sw t0, 0(sp)
-    addi sp, sp, 4
+#     sw t0, 0(sp)
+#     addi sp, sp, 4
     addi t0, t0, 1 # Increment counter
     j inc_arr_loop
 inc_arr_end:
