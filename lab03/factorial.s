@@ -1,7 +1,7 @@
 .globl factorial
 
 .data
-n: .word 7
+n: .word 8
 
 .text
 main:
@@ -22,10 +22,10 @@ main:
 
 factorial:
     # YOUR CODE HERE
-    add t0, a0, zero
+    #add t0, a0, zero
     addi t1, zero, 0
     #check the condtion if argument is 0 or less
-    bgt t0, t1, else
+    bgt a0, t1, else
     addi a0, zero, 1
     jr ra
     
@@ -34,7 +34,7 @@ factorial:
         addi t2, zero, 1      #result
         loop: 
             
-            bgt t1, t0, return
+            bgt t1, a0, return
             mul t2, t1, t2
             addi t1, t1, 1
             j loop
