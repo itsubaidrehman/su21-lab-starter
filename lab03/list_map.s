@@ -17,7 +17,8 @@ main:
 
     # Load the address of the "square" function into a1 (hint: check out "la" on the green sheet)
     ### YOUR CODE HERE ###
-    la a1, square
+    la a1, square     
+    
 
     # Issue the call to map
     jal ra, map
@@ -53,16 +54,15 @@ map:
     # Prologue: Make space on the stack and back-up registers
     ### YOUR CODE HERE ###
     
-    addi sp, sp, -8 #-16   # decrementing the stack by 3 location to store a0, a1, s0, ra
+    addi sp, sp, -8     #-16   # decrementing the stack by 3 location to store a0, a1, s0, ra
     sw ra, 0(sp)        #return address of function
     sw s0, 4(sp)        #node
-    #sw s1, 8(sp)
     #sw a1, 8(sp)
     #sw a0, 12(sp)
     beq a0, x0, done # If we were given a null pointer (address 0), we're done.
 
-    add s0, a0, x0 # Save address of this node in s0
-    add s1, a1, x0 # Save address of function in s1
+    add s0, a0, x0        # Save address of this node in s0
+    add s1, a1, x0        # Save address of function in s1
 
     # Remember that each node is 8 bytes long: 4 for the value followed by 4 for the pointer to next.
     # What does this tell you about how you access the value and how you access the pointer to next?
@@ -98,7 +98,7 @@ map:
 
     # Recurse
     ### YOUR CODE HERE ###
-    jal ra map
+    jal map
 
 done:
     # Epilogue: Restore register values and free space from the stack
